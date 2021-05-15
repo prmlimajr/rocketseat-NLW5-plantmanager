@@ -43,7 +43,7 @@ export function UserIdentification() {
 
   const handleInputChange = (value: string) => {
     setIsFocused(!!value);
-    setName(value);
+    setName(value.trim());
   };
 
   return (

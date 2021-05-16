@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/core';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   Alert,
   Keyboard,
@@ -24,9 +25,21 @@ export function UserIdentification() {
 
   const navigation = useNavigation();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (name) {
-      navigation.navigate('Confirmation');
+      try {
+        await AsyncStorage.setItem('@plantmanager:user', name);
+        navigation.navigate('Confirmation', {
+          title: 'Prontinho',
+          subtitle:
+            'Agora vamos começar a cuidar  das suas plantinhas com muito cuidado.',
+          buttonTitle: 'Começar',
+          icon: 'smile',
+          nextScreen: 'PlantSelect',
+        });
+      } catch (err) {
+        Alert.alert('Não foi possível salvar o nome. :(');
+      }
     } else {
       Alert.alert('Diz teu nome aí parceiro');
     }
